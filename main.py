@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import *
+from PIL import Image, ImageTk
 
 
 def getResolution(input_res):
@@ -8,7 +10,7 @@ def getResolution(input_res):
         '1500 x 1500': 1500,
         '2000 x 2000': 2000
               }
-    return(values[input_res])
+    return values[input_res]
 
 
 def getBright():
@@ -20,6 +22,14 @@ def showbutton():
     res = comboExample.get()
     print('Значние стороны: ',getResolution(res), "Пикселей")
     print("Добавить яркость:", getBright(), "%")
+
+def showWatermark():
+    app2 = tk.Tk()
+    app2.geometry('1000x1000')
+    im = tk.PhotoImage(file='загружено.jpg')
+    l = tk.Label(app2, image=im)
+    l.pack()
+
 
 
 
@@ -55,7 +65,16 @@ scaleExample = tk.Scale(app,
 
 scaleExample.grid(column=0, row=3)
 
+
+button = tk.Button(app, text="show",
+             command=showWatermark)
+button.grid(column=0, row=5)
+
+
 app.mainloop()
+
+
+
 
 
 
