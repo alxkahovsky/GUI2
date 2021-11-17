@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 from PIL import Image, ImageTk
+from tkinter import messagebox
+from tkinter import filedialog
 
 
 def getResolution(input_res):
@@ -23,12 +25,31 @@ def showbutton():
     print('Значние стороны: ',getResolution(res), "Пикселей")
     print("Добавить яркость:", getBright(), "%")
 
-def showWatermark():
-    app2 = tk.Tk()
-    app2.geometry('1000x1000')
-    im = tk.PhotoImage(file='загружено.jpg')
-    l = tk.Label(app2, image=im)
-    l.pack()
+
+def pic():
+
+    our_image = PhotoImage(file="163387.png")
+    our_image = our_image.subsample(5, 5)
+    our_label = Label(app)
+    our_label.image = our_image
+    our_label['image'] = our_label.image
+    our_label.place(x=400, y=400)
+
+def info_window():
+    windows = Toplevel()
+    windows.title('Водяной знак')
+    windows.geometry('1000x1000')
+    panel = Label(windows, image=img)
+    panel.pack(side="bottom", fill="both", expand="no")
+
+def browse_button():
+    # Allow user to select a directory and store it in global var
+    # called folder_path
+    global folder_path
+    filename = filedialog.askdirectory()
+    folder_path.set(filename)
+    print(filename)
+
 
 
 
@@ -36,8 +57,9 @@ def showWatermark():
 
 
 app = tk.Tk()
-app.geometry('800x800')
-
+app.title(" программа на Python")
+app.geometry('1000x800+400+150')
+img = ImageTk.PhotoImage(Image.open("163387.png"))
 labelTop = tk.Label(app,
                     text = "Выбери размер Выбери размер Выбери размер Выбери размер Выбери размер ")
 labelTop.grid(column=1, row=1)
@@ -67,8 +89,25 @@ scaleExample.grid(column=0, row=3)
 
 
 button = tk.Button(app, text="show",
-             command=showWatermark)
+             command=info_window)
 button.grid(column=0, row=5)
+
+
+our_image = PhotoImage(file="logotype128x37.png")
+our_image = our_image.subsample(1, 1)
+our_label = Label(app)
+our_label.image = our_image
+our_label['image'] = our_label.image
+our_label.place(x=0, y=200)
+
+
+folder_path = StringVar()
+
+lbl1 = Label(master=app,textvariable=folder_path, bg='gray50', width=50)
+lbl1.grid(row=10, column=1)
+button2 = Button(text="Browse", command=browse_button)
+button2.grid(row=10, column=3)
+
 
 
 app.mainloop()
