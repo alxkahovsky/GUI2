@@ -4,6 +4,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 from tkinter import messagebox
 from tkinter import filedialog
+from textwrap import wrap
 
 
 def getResolution(input_res):
@@ -52,24 +53,27 @@ def browse_button():
 
 
 def LoadFile():
-    ftypes = [('Все файлы', '*'), ('txt файлы', '*.txt'), ('Файлы Python', '*.py'),
-              ('Файлы html', '*.html')]  # Фильтр файлов
+    ftypes = [('Все файлы', '*'), ('Текстовые файлы TXT ', '*.txt'), ('Файлы Python', '*.py'),
+              ('HTML документ', '*.html')]  # Фильтр файлов
     fn = tk.filedialog.Open(app, filetypes=ftypes).show()
-
+    print(fn)
     if fn == '':
         return
     text.delete('1.0', 'end')  # Очищаем окно редактирования
-    text.insert('1.0', open(fn).read())  # Вставляем текст в окно редактирования
+    text.insert('1.0', open(fn, encoding='utf-8', mode='r').read())  # Вставляем текст в окно редактирования
 
     global cur_path
     cur_path = fn  # Храним путь к открытому файлу
-    print(cur_path)
 
 def SaveFile():
-    fn = tk.filedialog.SaveAs(app, filetypes = [('Все файлы', '*'), ('txt файлы', '*.txt'), ('Файлы Python', '*.py'), ('Файлы html', '*.html')]).show()
+    ftypes = [('Все файлы', '*'), ('Текстовые файлы TXT ', '*.txt'), ('Файлы Python', '*.py'),
+              ('HTML документ', '*.html')]  # Фильтр файлов
+    #fn = tk.filedialog.asksaveasfilename(name="ttt")
+    fn = tk.filedialog.asksaveasfilename(initialfile="Новый документ", defaultextension='.txt', filetypes=ftypes)
     if fn == '':
         return
-    open(fn, 'wt').write(text.get('1.0', 'end'))
+    open(fn, encoding='utf-8', mode='wt').write(text.get('1.0', 'end'))
+
 
 
 
@@ -150,14 +154,33 @@ lbl3 = Label(master=app,text='Наложить водяной знак:')
 lbl3.place(x=260, y=345)
 
 lbl3 = Label(master=app,text='Импорт имен')
-lbl3.place(x=426, y=345)
+lbl3.place(x=427, y=345)
 
 lbl4 = Label(master=app,text='в CSV таблицу:')
-lbl4.place(x=425, y=365)
+lbl4.place(x=427, y=365)
+
+lbl5 = Label(master=app,text='В текстовом поле можно создавать и редактировать заметки:', font="16")
+lbl5.place(x=10, y=80)
+
+lbl6 = Label(master=app,text='В меню обработки изображений доступны функции:', font="16")
+lbl6.place(x=10, y=317)
+
+lbl7_text ='Добро пожаловать! Вы изпользуете PYRT, приложение предназначено для массовых манипуляций с файлами изображений'
+lbl7 = Label(master=app,text=lbl7_text)
+lbl7.place(x=170, y=15)
+
+
 #button2 = Button(text="Обзор", command=browse_button, highlightcolor="red")
 #button2.place(x=132, y=180)
 
+app.update()
 
+width = lbl7.winfo_width()
+row = 375
+if width > row:
+    char_width = width / len(lbl7_text)
+    wrapped_text = '\n'.join(wrap(lbl7_text, int(row / char_width)))
+    lbl7['text'] = wrapped_text
 
 
 button4 = Button(app, image=res_button, command=lambda: print('resize'), bd=1, activebackground='LightCyan2')
@@ -179,20 +202,17 @@ button8.place(x=0, y=0)
 button9 = Button(app, image=our_image, command=lambda: print('usadba url'), bd=0)
 button9.place(x=398, y=550)
 
-text = Text(width=50, height=12)
+text = Text(width=63, height=10, bg="azure")
 text.place(x=10, y=100)
 
 
 
 
+instruktionBtn = Button(app, text='Открыть заметку', command=LoadFile, bd=1, activebackground='LightCyan2', bg="mint cream")
+instruktionBtn.place(x=10, y=270)
 
-
-
-#instruktionBtn = Button(app, text='Открыть ТХТ', command=LoadFile)
-#instruktionBtn.place(x=430, y=100)
-
-instruktionBtn = Button(app, text='Сохранить ТХТ', command=SaveFile)
-instruktionBtn.place(x=430, y=250)
+instruktionBtn = Button(app, text='Сохранить заметку', command=SaveFile, bd=1, activebackground='LightCyan2', bg="mint cream")
+instruktionBtn.place(x=120, y=270)
 
 
 
