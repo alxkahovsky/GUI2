@@ -256,7 +256,7 @@ def browse_button():
     print(filename)
 
 
-def LoadFile():
+def LoadFile(2):
     ftypes = [('Все файлы', '*'), ('Текстовые файлы TXT ', '*.txt'), ('Файлы Python', '*.py'),
               ('HTML документ', '*.html')]  # Фильтр файлов
     fn = tk.filedialog.Open(app, filetypes=ftypes).show()
