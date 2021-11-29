@@ -6,6 +6,10 @@ from tkinter import messagebox
 from tkinter import filedialog
 from textwrap import wrap
 
+def warningMessage():
+    messagebox.showwarning("Внимание!", "Не выбраны условия для поиска!")
+
+
 
 def getResolution(input_res):
     values = {
@@ -49,7 +53,6 @@ def info_window():
 """
 
 
-
 def db_window():
     def showbutton():
         group_id = comboGroup.get()
@@ -58,31 +61,43 @@ def db_window():
         prod = prod_id.get()
         photo_chek = comboPhoto.get()
         if prod != '' and group_id == 'Выберите группу товаров' and shop == '' and shop2 == '' and photo_chek == 'укажите':
+            print('Поиск по артикулу!')
             print(prod)
             return prod
-        else:
-            print('No prod')
-
         if group_id != 'Выберите группу товаров' and shop != '' and shop2 != '' and photo_chek == 'укажите':
-
+            print('Поиск совпадений или исключений!')
             print(group_id, shop, shop2)
             return (group_id, shop, shop2)
         elif group_id != 'Выберите группу товаров' and shop != ''and photo_chek == 'укажите':
-
+            print('Поиск по группе в магазине')
             print(group_id, shop)
             return (group_id, shop)
         elif group_id != 'Выберите группу товаров'and photo_chek == 'укажите':
-
+            print('Поиск по группе в всех магазинах')
             print(group_id)
             return group_id
+        elif group_id != 'Выберите группу товаров' and shop != ''and photo_chek == 'Да':
+            print("Поиск по группе в магазине товаров с фото")
+            print(group_id, shop, photo_chek)
+        elif photo_chek == 'Да' and shop != '' and group_id != 'Выберите группу товаров':
+            print('Поиск товаров группы с фото по магазину')
+        elif photo_chek == "Да" and group_id != 'Выберите группу товаров':
+            print('Товары группы с фото')
+        elif photo_chek == 'Да' and shop != '':
+            print('Поиск товаров с фото по магазину')
+        elif photo_chek == 'Да':
+            print('Поиск товаров с фото')
+        elif photo_chek == 'Нет' and shop != '' and group_id != 'Выберите группу товаров':
+            print('Товары у которых нет фото в магазине по группам')
+        elif photo_chek == 'Нет' and shop != '':
+            print('Товары без фото в магазине')
+        elif photo_chek == 'Нет' and group_id != 'Выберите группу товаров':
+            print('Товары без фото в группе ')
+        elif photo_chek == 'Нет':
+            print('Все товары без фото')
         else:
-            print('no group, shop, shop2')
-
-        #if photo_chek == 'Да' and group_id == 'Выберите группу товаров' and shop == '' and shop2 == '' and prod == '':
-           # print(photo_chek)
-        #else:
-            #print('no photo')
-
+            print('delete else after Tests!!!')
+            messagebox.showwarning("Внимание!", "Не выбраны условия для поиска! Выберите условия и попробуйте снова.")
 
 
 
@@ -208,7 +223,7 @@ def db_window():
                               ,
                                 width=40,
                                 justify='center')
-    comboGroup.place(x=127, y=0)
+    comboGroup.place(x=127, y=50)
     comboGroup.current(0)
 
     comboShop = ttk.Combobox(windows,
@@ -216,7 +231,7 @@ def db_window():
                                      'У21'],
                              width=12,
                              justify='center')
-    comboShop.place(x=400, y= 0)
+    comboShop.place(x=400, y= 50)
     #comboShop.current(0)
 
     comboShop2 = ttk.Combobox(windows,
@@ -224,7 +239,7 @@ def db_window():
                                      'У21'],
                              width=12,
                              justify='center')
-    comboShop2.place(x=500, y=0)
+    comboShop2.place(x=500, y=50)
     #comboShop2.current()
 
     comboPhoto = ttk.Combobox(windows,
@@ -234,16 +249,28 @@ def db_window():
                                       'Нет'],
                               width=12,
                               justify='center')
-    comboPhoto.place(x=600, y=0)
+    comboPhoto.place(x=600, y=50)
     comboPhoto.current(0)
 
-    button = tk.Button(windows, text="КНОПКА ДЛЯ ТЕСТОВ!НЕ ТРОГАТЬ ",
+    button = tk.Button(windows, text="Печать результатата!",
     command=showbutton)
     button.place(x=300, y=180)
 
     prod_id = StringVar()
     prod_id_field = Entry(windows, textvariable=prod_id )
-    prod_id_field.place(x=0, y=0)
+    prod_id_field.place(x=0, y=50)
+
+    lbl1 = Label(master=windows, text='Код товара:')
+    lbl1.place(x=0, y=20)
+    lbl2 = Label(master=windows, text='Группа товаров:')
+    lbl2.place(x=127, y=20)
+    lbl3 = Label(master=windows, text='Магазин:')
+    lbl3.place(x=400, y=20)
+    lbl4 = Label(master=windows, text='Магазин 2:')
+    lbl4.place(x=500, y=20)
+    lbl5 = Label(master=windows, text='Наличие фото:')
+    lbl5.place(x=600, y=20)
+
 
 
 
@@ -256,7 +283,7 @@ def browse_button():
     print(filename)
 
 
-def LoadFile(2):
+def LoadFile():
     ftypes = [('Все файлы', '*'), ('Текстовые файлы TXT ', '*.txt'), ('Файлы Python', '*.py'),
               ('HTML документ', '*.html')]  # Фильтр файлов
     fn = tk.filedialog.Open(app, filetypes=ftypes).show()
@@ -300,7 +327,7 @@ comboExample.current(0)
              #command=showbutton)
 #button.place(x=300, y=180)
 
-button = tk.Button(app, text="КНОПКА ДЛЯ ТЕСТОВ!НЕ ТРОГАТЬ ",
+button = tk.Button(app, text="Раздел работы с БД",
              command=db_window)
 button.place(x=0, y=550)
 
